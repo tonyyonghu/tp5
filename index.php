@@ -11,6 +11,10 @@ require str_replace("\\","/",__DIR__).'/thinkphp/base.php';
 // 执行应用
 //\think\App::run()->send();
 // 加载框架引导文件
-// 
+//
+echo 11111;
+echo 22222;
+echo 33333;
+echo 44444;
 require __DIR__ . '/thinkphp/start.php';
 ?>
