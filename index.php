@@ -9,8 +9,8 @@ require str_replace("\\","/",__DIR__).'/thinkphp/base.php';
 // 添加额外的代码
 // ...
 // 执行应用
-\think\App::run()->send();
+//\think\App::run()->send();
 // 加载框架引导文件
 // 
-//require __DIR__ . '/thinkphp/start.php';
+require __DIR__ . '/thinkphp/start.php';
 ?>
