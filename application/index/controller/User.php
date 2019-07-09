@@ -12,7 +12,7 @@ class User
 {
     public function index()
     {
-	$list = Db('keywords')->where('id','>',10)->order('id ASC')->select();
+	   $list = Db('keywords')->where('id','>',10)->order('id ASC')->select();
 	
     	//vendor('PHPExcel.PHPExcel');
     	//2.加载PHPExcle类库

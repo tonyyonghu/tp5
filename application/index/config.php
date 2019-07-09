@@ -7,5 +7,10 @@
 	            '__IMG__' =>'/static/admin/img',
 	            '__FONT__' =>'/static/admin/img',
 	            '__HOME__' =>'/public/static/home/',
-	    ]
+	    ],
+	'template' => [
+    	// 模板路径
+    	'view_path'    => APP_PATH.config('default_module').'/'.config('template.view_path'),
+	],
+
 	];

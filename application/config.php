@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+use think\Config;
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
@@ -17,7 +17,7 @@ return [
     // 应用调试模式
     'app_debug'              => true,
     // 应用Trace
-    'app_trace'              => false,
+    'app_trace'              => true,
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -123,7 +123,7 @@ return [
         // 模板引擎类型 支持 php think 支持扩展
         'type'         => 'Think',
         // 模板路径
-        'view_path'    => '',
+        'view_path'    => 'view/Theme/',
         // 模板后缀
         'view_suffix'  => 'html',
         // 模板文件名分隔符
@@ -136,6 +136,26 @@ return [
         'taglib_begin' => '{',
         // 标签库标签结束标记
         'taglib_end'   => '}',
+        /**
+         * 前台文件配置
+         * Author: MR.zhou
+         * */
+        'index' => [
+            // 模快名称
+            'model_name' =>'index',
+            // 默认模板文件名称
+            'default_template' => 'default',       // 这里可以切换模块下的默认模板名称
+        ],
+        /**
+         * 后台文件配置
+         * Author: MR.zhou
+         * */
+        'admin'=>[
+            // 模快名称
+            'model_name' =>'admin',
+            // 默认模板文件名称
+            'default_template' =>'default',        // 这里可以切换模块下的默认模板名称
+        ],
     ],
 
     // 视图输出字符串内容替换
@@ -236,6 +256,8 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+   
+
     
     
 ];

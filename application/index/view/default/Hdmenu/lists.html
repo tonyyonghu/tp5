@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>活动列表</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Theme1/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="__PUBLIC__/Theme1/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="__PUBLIC__/Theme1/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/style.min.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>活动菜单 <a href="__URL__/add" style="margin-left:15px; color:#06cbc4">添加菜单</a></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>活动菜单名称</th>
+                                    <th>活动图标</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <foreach name="rs_hdmenu" item="val_hdmenu">
+                                <tr>
+                                    <td><{$val_hdmenu.hdId}></td>
+                                    <td><{$val_hdmenu.hdName}></td>
+                                    <td><img src="__ROOT__/<{$val_hdmenu.hdIco}>" width="64px" height="64px"></td>
+                                    <td><a href="__URL__/update/hdId/<{$val_hdmenu.hdId}>"><i class="glyphicon glyphicon-pencil"></i></a> <a style="margin-left: 15px;" href="__URL__/DelAction/hdId/<{$val_hdmenu.hdId}>"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                </tr>
+                              </foreach>
+                            </tbody>
+                            
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__PUBLIC__/Theme1/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/Theme1/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/Theme1/js/plugins/jeditable/jquery.jeditable.js"></script>
+    <script src="__PUBLIC__/Theme1/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="__PUBLIC__/Theme1/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="__PUBLIC__/Theme1/js/content.min.js?v=1.0.0"></script>
+    <script>
+        $(document).ready(function(){$(".dataTables-example").dataTable();var oTable=$("#editable").dataTable();oTable.$("td").editable("../example_ajax.php",{"callback":function(sValue,y){var aPos=oTable.fnGetPosition(this);oTable.fnUpdate(sValue,aPos[0],aPos[1])},"submitdata":function(value,settings){return{"row_id":this.parentNode.getAttribute("id"),"column":oTable.fnGetPosition(this)[2]}},"width":"90%","height":"100%"})});function fnClickAddRow(){$("#editable").dataTable().fnAddData(["Custom row","New row","New row","New row","New row"])};
+    </script>
+
+</body>
+
+</html>

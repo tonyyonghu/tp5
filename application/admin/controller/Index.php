@@ -14,7 +14,8 @@ class Index extends Controller
     	$user=new User();
     	// $user->sayhello();
    	
-    	dump(config());
+    	// dump(config());
+    	$this->assign("name","THINKPHP");
     	
        return view();
     	//return APP_PATH."\r\n";

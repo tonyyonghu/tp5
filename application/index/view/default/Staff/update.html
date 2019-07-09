@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改员工信息</title>
+    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Theme1/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="__PUBLIC__/Theme1/static/plupload/upfiless.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/Theme1/lib/webuploader/0.1.5/webuploader.css" rel="stylesheet" type="text/css" />
+    <link href="__PUBLIC__/Theme1/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>修改员工信息 <a style="margin-left: 15px; color:#06cbc4" href="__URL__/lists">返回列表</a></h5>
+                        <div class="ibox-tools">
+                            
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form method="post" action="__URL__/UpdateAction/stId/<{$rs_staffInfo.stId}>" class="form-horizontal" id="form-admin-add" enctype="multipart/form-data" >
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">员工编号</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stNum" id="stNum" value="<{$rs_staffInfo.stNum}>" placeholder="请输入整数,员工的编号或序号" class="form-control">
+                                </div>
+                                 <label class="col-sm-1 control-label">员工姓名</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stName" value="<{$rs_staffInfo.stName}>" id="stName" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">员工性别</label>
+                                <php>
+                                $sex_1=1;
+                                $sex_2=2;
+                                $checked="";
+                                $checkedss="";
+                                if($rs_staffInfo["stSex"]==$sex_1){
+                                    $checked="checked";
+                                }else{
+                                    $checkedss="checked";
+                                    }
+                                </php>
+                                <div class="col-sm-3">
+                                
+                                    <label class="checkbox-inline">
+                                        <input type="radio" name="stSex" value="<{$sex_1}>" <{$checked}>> 男</label>
+                                    <label class="checkbox-inline">
+                                        <input type="radio" value="<{$sex_2}>" name="stSex" <{$checkedss}>> 女</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label">出生日期</label>
+                                    <div class="col-sm-1">
+                                    <select data-placeholder="员工出生日期" name="stBirthdateType" class="chosen-select form-control" required>
+                                    <if condition="$rs_staffInfo.stBirthdateType eq 1" >
+                                    <option value="1" selected >公历</option>
+                                    <option value="2" >农历</option>
+                                    <else/>
+                                    <option value="1" >公历</option>
+                                    <option value="2" selected >农历</option>
+                                    </if>
+                                    </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <input type="date" name="stBirthdate" id="stBirthdate" value="<{$rs_staffInfo.stBirthdate}>" class="form-control">
+                                    </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">员工电话</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stTel" id="stTel" value="<{$rs_staffInfo.stTel}>" class="form-control">
+                                </div>
+
+                                <label class="col-sm-1 control-label">员工学历</label>
+                                <div class="col-sm-3">
+                                <select class="chosen-select form-control" size="1" name="stDegrees" id="stDegrees" required >
+                                    <option value="" >请选择学历</option>
+                                    <foreach name="xueli" item="valxueli" key="xuelik">
+                            <php>
+                            $xzxueli="";
+                                if($rs_staffInfo["stDegrees"]==$xuelik){
+                                $xzxueli="selected";
+                                }
+                            </php>
+                            <option value="<{$xuelik}>" <{$xzxueli}>><{$valxueli}></option>
+                            </foreach> 
+                                </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">入职日期</label>
+                                <div class="col-sm-3">
+                                    <input type="date" name="stEntryDate" value="<{$rs_staffInfo.stEntryDate}>" id="stEntryDate" class="form-control">
+                                </div>
+
+                                <if condition="$depId neq 0">
+                                    <label class="col-sm-1 control-label">所在部门</label>
+                                    <div class="col-sm-3">
+                                        <select class="chosen-select form-control" size="1" name="stDid" id="stDid" required >
+                                            <php>
+                                            $selected="";
+                                            if($rs_staffInfo["stDid"]==$rs_department["dId"]){
+                                                $selected="selected";
+                                            }
+                                            </php>
+                                            <if condition="$rs_department.dPid eq 0 AND $rs_department.dPsid eq 0">
+                                            <option  style="color:#f87ca8" value="<{$rs_department.dId}>" <{$selected}>><{$rs_department.dName}></option>
+                                            <elseif condition="$rs_department.dPid neq 0 AND $rs_department.dPsid eq 0"/>
+                                        <php>
+                                        $dPid=$rs_department["dPid"];
+                                        $department=M("department");
+                                        $rsp=$department->where("dId={$dPid}")->find();
+                                        </php>
+                                        <option style="color:#44a5e4" value="<{$rs_department.dId}>" <{$selected}>><{$rsp.dName}> -> <{$rs_department.dName}></option>
+                                        
+                                        <elseif condition="$rs_department.dPid eq 0 AND $rs_department.dPsid neq 0"/>
+                                        <php>
+                                        $dPsid=$rs_department["dPsid"];
+                                        $department=M("department");
+                                        $rsps=$department->where("dId={$dPsid}")->find();
+                                        $rsPsPid=$rsps["dPid"];
+                                        $rsPspe=$department->where("dId={$rsPsPid}")->find();
+                                        </php>
+                                        <option style="color:#067b14" value="<{$rs_department.dId}>" <{$selected}>><{$rsPspe.dName}> -> <{$rsps.dName}> -> <{$rs_department.dName}></option>
+                                        </if>  
+                                    </select>
+                                    </div>
+                            </div>
+                            <else/>
+
+                                <label class="col-sm-1 control-label">所在部门</label>
+                                <div class="col-sm-3">
+                                    <select class="chosen-select form-control" size="1" name="stDid" id="stDid" required >
+                                    <foreach name="rs_department" item="val_department">
+                                        <php>
+                                        $selected="";
+                                        if($rs_staffInfo["stDid"]==$val_department["dId"]){
+                                            $selected="selected";
+                                        }
+                                        </php>
+                                        <if condition="$val_department.dPid eq 0 AND $val_department.dPsid eq 0">
+                                        <option  style="color:#f87ca8" value="<{$val_department.dId}>" <{$selected}>><{$val_department.dName}></option>
+                                        <elseif condition="$val_department.dPid neq 0 AND $val_department.dPsid eq 0"/>
+                                    <php>
+                                    $dPid=$val_department["dPid"];
+                                    $department=M("department");
+                                    $rsp=$department->where("dId={$dPid}")->find();
+                                    </php>
+                                    <option style="color:#44a5e4" value="<{$val_department.dId}>" <{$selected}>><{$rsp.dName}> -> <{$val_department.dName}></option>
+                                    
+                                    <elseif condition="$val_department.dPid eq 0 AND $val_department.dPsid neq 0"/>
+                                    <php>
+                                    $dPsid=$val_department["dPsid"];
+                                    $department=M("department");
+                                    $rsps=$department->where("dId={$dPsid}")->find();
+                                    $rsPsPid=$rsps["dPid"];
+                                    $rsPspe=$department->where("dId={$rsPsPid}")->find();
+                                    </php>
+                                    <option style="color:#067b14" value="<{$val_department.dId}>" <{$selected}>><{$rsPspe.dName}> -> <{$rsps.dName}> -> <{$val_department.dName}></option>
+                                    </if>
+                                    </foreach>
+                                    
+                                </select>
+                                </div>
+                            </div>
+                                </if>
+
+
+                            </if>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">职称</label>
+                                <div class="col-sm-3">
+                                    <select class="chosen-select form-control" size="1" name="stPositionalTitles" id="stPositionalTitles" required >
+                                   
+                                    <option value="" selected>请选择职称</option>
+                                    <foreach name="zhicheng" item="valzhicheng" key="zhichengk">
+                                    <php>
+                                    $xzzhicheng="";
+                                        if($rs_staffInfo["stPositionalTitles"]==$zhichengk){
+                                        $xzzhicheng="selected";
+                                        }
+                                    </php>
+                                    <option value="<{$zhichengk}>" <{$xzzhicheng}>><{$valzhicheng}></option>
+                                    </foreach>  
+                                    
+                                </select>
+                                </div>
+
+                                <label class="col-sm-1 control-label">职务</label>
+                                <div class="col-sm-3">
+                                    <select class="chosen-select form-control" size="1" name="stDuties" id="stDuties" required >
+                                    <option value="" selected>请选择职务</option>
+                                    <foreach name="zhiwu" item="valzhiwu" key="zhiwuk">
+                                    <php>
+                                    $xzzhiwu="";
+                                        if($rs_staffInfo["stDuties"]==$zhiwuk){
+                                        $xzzhiwu="selected";
+                                        }
+                                    </php>
+                                    <option value="<{$zhiwuk}>" <{$xzzhiwu}>><{$valzhiwu}></option>
+                                    </foreach>
+                                    
+                                </select>
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group">
+								<label class="col-sm-1 control-label">婚姻状况</label>
+									<div class="col-sm-3">
+									<select class="chosen-select form-control" size="1"
+										name="stMarital" id="stMarital" required>
+										<option value="">请选择婚姻状况</option>
+										<foreach name="hunyin" item="valhunyin" key="hunyink">
+                                        <php> $xzhunyin="";
+										if($rs_staffInfo["stMarital"]==$hunyink){ $xzhunyin="selected";
+										} </php>
+										<option value="<{$hunyink}>"<{$xzhunyin}>><{$valhunyin}></option>
+										</foreach>
+									</select>
+									</div>
+							
+							
+                                <label class="col-sm-1 control-label">民族</label>
+								<div class="col-sm-3">
+							
+								<select class="chosen-select form-control" size="1"
+								name="stMultiracial" id="stMultiracial" required>
+
+								<option value="" selected>请选择民族</option>
+								<foreach name="minzu" item="valminzu" key="minzuk">
+								<php> $xzminzu="";
+								if($rs_staffInfo["stMultiracial"]==$minzuk){
+								$xzminzu="selected"; } </php>
+								<option value="<{$minzuk}>"<{$xzminzu}>><{$valminzu}></option>
+								</foreach>
+
+							</select>
+							</div>
+
+                                
+
+                            </div>
+
+
+                            <div class="form-group">
+							
+								<label class="col-sm-1 control-label">籍贯</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stNativePlace" id="stNativePlace" value="<{$rs_staffInfo.stNativePlace}>"  class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label">身份证号码</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stIDCard" value="<{$rs_staffInfo.stIDCard}>" id="stIDCard" class="form-control">
+                                </div>
+
+                                
+
+                            </div>
+
+                            <div class="form-group">
+								<label class="col-sm-1 control-label">所在地</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stCity" id="stCity" value="<{$rs_staffInfo.stCity}>"  class="form-control">
+                                </div>
+							
+                                <label class="col-sm-1 control-label">身高（CM）</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stHeight" value="<{$rs_staffInfo.stHeight}>" id="stHeight" class="form-control">
+                                </div>
+
+                                
+
+                            </div>
+
+                            <div class="form-group">
+							
+								<label class="col-sm-1 control-label">体重（Kg）</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stWeight" value="<{$rs_staffInfo.stWeight}>" id="stWeight" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label">政治面貌</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stPoliticalIandscape" id="stPoliticalIandscape" value="<{$rs_staffInfo.stPoliticalIandscape}>" class="form-control">
+                                </div>
+
+                                
+
+                            </div>
+
+
+                            <div class="form-group">
+								<label class="col-sm-1 control-label">员工QQ</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stQQ" id="stQQ" value="<{$rs_staffInfo.stQQ}>" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label">员工邮箱</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="stEmail" id="stEmail" value="<{$rs_staffInfo.stEmail}>" class="form-control">
+                                </div>
+
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">掌握技能</label>
+                                <div class="col-sm-3">
+                                    <textarea class="input-text form-control" id="stJineng" name="stJineng" rows="3" ><{$rs_staffInfo.stJineng}></textarea>
+                                </div>
+                                <label class="col-sm-1 control-label">工作经验</label>
+                                <div class="col-sm-3">
+                                    <textarea class="input-text form-control" id="stJingyuan" name="stJingyuan" rows="3" placeholder=""><{$rs_staffInfo.stJingyuan}></textarea>
+                                </div>
+                            </div>
+                            
+                                <php>
+                                $stPhoto=strlen($rs_staffInfo["stPhoto"]);
+                                </php>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label" style="margin-top: 20px;">照片</label>
+                                <div class="col-sm-7">
+                                    <dl id="ul_pics" class="ul_pics clearfix" >
+                                       <if condition="$stPhoto lt 10">
+                                     <img src="__PUBLIC__/Theme1/img/not.png" width="100" height="100" style=" margin-bottom:5px;">
+                                     <else/>
+                                     <img src="__ROOT__/<{$rs_staffInfo.stPhoto}>" width="100" height="100" style=" margin-bottom:5px;">
+                                     </if>
+
+
+                                    </dl>
+                                    <a class="upimgs col-sm-2" id="btn" style="background-color:#067fcb; width:100px; margin-top: 2px;">浏览照片</a>
+                                    <if condition="$stPhoto gt 5">
+                                     <input class="form-control upload-url" name="stPhoto" value="<{$rs_staffInfo.stPhoto}>" id="pPic" style="width:88%; margin-left:5px; margin-right:5px;">
+                                     <else/>
+                                    <input class="upload-url form-control" name="stPhoto" value="" id="pPic" style="width:88%; margin-left:5px; margin-right:5px;">
+                                     </if>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">附件</label>
+                                <div class="col-sm-7">
+                                <input type="hidden" name="stEnclosure" value="<{$rs_staffInfo.stEnclosure}>" id="stEnclosure" class="form-control">
+                                    <input type="file" name="stEnclosure" value="<{$rs_staffInfo.stEnclosure}>" id="stEnclosure" class="form-control">
+                                </div>
+
+                            </div>
+                        
+                                
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-primary" type="submit">修改员工信息</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="__PUBLIC__/Theme1/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/Theme1/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="__PUBLIC__/Theme1/js/content.min.js?v=1.0.0"></script>
+    <script src="__PUBLIC__/Theme1/js/plugins/iCheck/icheck.min.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/Theme1/check/js/jquery.validate.min.js"></script> 
+
+<script type="text/javascript" src="__PUBLIC__/Theme1/check/js/messages_zh.min.js"></script> 
+
+<script type="text/javascript" src="__PUBLIC__/Theme1/check/js/validate-methods.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/Theme1/lib/webuploader/0.1.5/webuploader.min.js"></script> 
+
+    <script>
+        $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+    </script>
+    
+    <script type="text/javascript">
+	$(function(){
+	$("#form-admin-add").validate({
+		rules:{
+            stNum:{
+                required:true,
+                minlength:1,
+                maxlength:8
+            },
+            stName:{
+                required:true,
+                minlength:2,
+                maxlength:16
+            },
+            stSex:{
+                required:true,
+            },
+            stBirthdate:{
+                required:true,
+            },
+            sCompanyIntroduce:{
+                required:true,
+            },
+            stTel:{
+                required:true,
+                minlength:7,
+                maxlength:11
+            },
+           
+            
+            
+        },
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+});
+</script> 
+    
+<script type="text/javascript" src="__PUBLIC__/Theme1/static/plupload/plupload.full.min.js"></script>
+<script type="text/javascript">
+            var uploader = new plupload.Uploader(
+                  {
+                    runtimes: 'html5,flash,silverlight,html4', //上传插件初始化选用那种方式的优先级顺序
+                    browse_button: 'btn', // 上传按钮
+                    url: "__URL__/up", //远程上传地址
+                    flash_swf_url: '__PUBLIC__/plupload/Moxie.swf', //flash文件地址
+                    silverlight_xap_url: '__PUBLIC__/plupload/Moxie.xap', //silverlight文件地址
+                    filters: {
+                        max_file_size: '2mb', //最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+                        mime_types: [//允许文件上传类型
+                            {title: "files", extensions: "jpg,png,gif"}
+                        ]
+                 },
+                multi_selection: true, //true:ctrl多文件上传, false 单文件上传
+                init: {
+                    FilesAdded: function(up, files) { //文件上传前
+                        if ($("#ul_pics").children("li").length >7) {
+                            alert("您上传的图片太多了！");
+                            uploader.destroy();
+                        } else {
+                            var dd = '';
+                            plupload.each(files, function(file) { //遍历文件
+                                dd += "<dd id='" + file['id'] + "'><div class='progress'><span class='bar'></span><span class='percent'>0%</span></div></dd>";
+                            });
+                            $("#ul_pics").append(dd);
+                            uploader.start();
+                        }
+                    },
+                    UploadProgress: function(up, file) { //上传中，显示进度条
+                 var percent = file.percent;
+                        $("#ul_pics" + file.id).find('.bar').css({"width": percent + "%"});
+                        $("#ul_pics" + file.id).find(".percent").text(percent + "%");
+                    },
+                    FileUploaded: function(up, file, info) { //文件上传成功的时候触发
+                       var data = eval("(" + info.response + ")");
+                        $("#" + file.id).html("<img src='__ROOT__/" + data.pic + "'/>");
+                        var old=$("#pPic").val();
+                         $("#pPic").val(old + data.pic+'###');
+                    },
+                    Error: function(up, err) { //上传出错的时候触发
+                        alert(err.message);
+                    }
+                }
+            });
+            uploader.init();
+        </script>  
+</body>
+
+</html>

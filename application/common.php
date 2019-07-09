@@ -13,101 +13,104 @@ use think\Env;
 
 // 应用公共文件
 
-function setPdf($content, $title){
 
-    $logo                       = Env::get('root_path') .'public/favicon.ico';
-
-    require Env::get('root_path') .'vendor/Tcpdf/tcpdf.php';
-
-    $pdf                        = new \Tcpdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-    $pdf->SetCreator(PDF_CREATOR);
-
-    $pdf->SetAuthor("作者");//设置作者
-
-    $pdf->SetTitle($title);
-
-    $pdf->SetSubject('TCPDF Tutorial');
-
-    //$pdf->SetKeywords('TCPDF, PDF, example, test, guide');//设置关键字
-
-    // 是否显示页眉
-
-    $pdf->setPrintHeader(false);
-
-    // 设置页眉显示的内容
-
-    //$pdf->SetHeaderData($logo, 60, '', '');
-
-    // 设置页眉字体
-
-    //$pdf->setHeaderFont(Array('deja2vusans', '', '12'));
-
-    // 页眉距离顶部的距离
-
-    $pdf->SetHeaderMargin('5');
-
-    // 是否显示页脚
-
-    //$pdf->setPrintFooter(true);
-
-    // 设置页脚显示的内容
-
-    //$pdf->setFooterData(array(0,64,0), array(0,64,128));
-
-    // 设置页脚的字体
-
-    //$pdf->setFooterFont(Array('dejavusans', '', '10'));
-
-    // 设置页脚距离底部的距离
-
-    //$pdf->SetFooterMargin('10');
-
-    // 设置默认等宽字体
-
-    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-    // 设置行高
-
-    $pdf->setCellHeightRatio(1.5);
-
-    // 设置左、上、右的间距
-
-    $pdf->SetMargins('15', '15', '15');
-
-    // set auto page breaks
-
-    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
-    // 设置字体
-
-    $pdf->SetFont('simhei', '', 12, '', true);
-
-    // 设置是否自动分页 距离底部多少距离时分页
-
-    //$pdf->SetAutoPageBreak(TRUE, '15');
-
-    // 设置图像比例因子
-
-    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-    //$pdf->setFontSubsetting(true);
-
-    $pdf->AddPage("A4","Landscape",true,true);
-
-    //$pdf->writeHTML($content);//HTML生成PDF
-
-    $pdf->writeHTML('<img src="'.$logo.'" width="95"><br>'.$content, true, false, true, false, '');//设置logo
-
-    //$pdf->writeHTMLCell(0, 0, '', '', $content, 0, 1, 0, true, '', true);
-
-    $showType= 'I';//PDF输出的方式。I，在浏览器中打开；D，以文件形式下载；F，保存到服务器中；S，以字符串形式输出；E：以邮件的附件输出。
-
-    $pdf->Output("pdf.pdf", $showType);
-
-    exit();
-
+function cn_substrR($str, $slen, $startdd=0)
+{
+    $str = cn_substr(stripslashes($str), $slen, $startdd);
+    return addslashes($str);
 }
+
+
+function cn_substr($str, $slen, $startdd=0)
+    {
+        $cfg_soft_lang="utf-8";
+        if($cfg_soft_lang=='utf-8')
+        {
+            return cn_substr_utf8($str, $slen, $startdd);
+        }
+        $restr = '';
+        $c = '';
+        $str_len = strlen($str);
+        if($str_len < $startdd+1)
+        {
+            return '';
+        }
+        if($str_len < $startdd + $slen || $slen==0)
+        {
+            $slen = $str_len - $startdd;
+        }
+        $enddd = $startdd + $slen - 1;
+        for($i=0;$i<$str_len;$i++)
+        {
+            if($startdd==0)
+            {
+                $restr .= $c;
+            }
+            else if($i > $startdd)
+            {
+                $restr .= $c;
+            }
+
+            if(ord($str[$i])>0x80)
+            {
+                if($str_len>$i+1)
+                {
+                    $c = $str[$i].$str[$i+1];
+                }
+                $i++;
+            }
+            else
+            {
+                $c = $str[$i];
+            }
+
+            if($i >= $enddd)
+            {
+                if(strlen($restr)+strlen($c)>$slen)
+                {
+                    break;
+                }
+                else
+                {
+                    $restr .= $c;
+                    break;
+                }
+            }
+        }
+        return $restr;
+    }
+
+    function cn_substr_utf8($str, $length, $start=0)
+    {
+        if(strlen($str) < $start+1)
+        {
+            return '';
+        }
+        preg_match_all("/./su", $str, $ar);
+        $str = '';
+        $tstr = '';
+
+        //为了兼容mysql4.1以下版本,与数据库varchar一致,这里使用按字节截取
+        for($i=0; isset($ar[0][$i]); $i++)
+        {
+            if(strlen($tstr) < $start)
+            {
+                $tstr .= $ar[0][$i];
+            }
+            else
+            {
+                if(strlen($str) < $length + strlen($ar[0][$i]) )
+                {
+                    $str .= $ar[0][$i];
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        return $str;
+    }
 
 
 /*将中文转换成拼音函数*/
